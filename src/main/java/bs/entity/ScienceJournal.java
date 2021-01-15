@@ -1,6 +1,8 @@
 package bs.entity;
 
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 
 
@@ -14,6 +16,12 @@ public class ScienceJournal extends Book {
 	}
 	public void setScienceIndex(int scienceIndex) {
 		this.scienceIndex = scienceIndex;
+	}
+	public ScienceJournal() {
+		super();
+	}
+	public ScienceJournal(String name, String author, String barcode, int quantity, BigDecimal price) {
+		super(name, author, barcode, quantity, price);
 	}
 	
 	

@@ -43,6 +43,7 @@ public class AntiqueBookService implements BookService<AntiqueBook>{
 
 	public String calculatePrice(String barcode) {
 		AntiqueBook book = findByBarcode(barcode);
+
 		if (book != null) {
 			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 			BigDecimal yearMultiplier = new BigDecimal((currentYear - book.getYear())).divide(new BigDecimal(10), 6, RoundingMode.HALF_UP);
