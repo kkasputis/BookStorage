@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 @Entity
 public class AntiqueBook extends Book{
 
-	long id;
-	long bookId;
 	private int year;
 
 	public int getYear() {
