@@ -1,5 +1,7 @@
 package bs.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +20,7 @@ public class BookController {
 	@Autowired
 	PriceService priceService;
 
-	@RequestMapping(value = "book/save", method = RequestMethod.POST)
+	@RequestMapping(value = "books", method = RequestMethod.POST)
 	public String newBook(@RequestBody Book book) {
 		return bookService.save(book);
 	}
@@ -29,7 +31,7 @@ public class BookController {
 		return bookService.findByBarcode(barcode);
 	}
 
-	@RequestMapping(value = "book/update/{barcode}", method = RequestMethod.PUT)
+	@RequestMapping(value = "book/{barcode}", method = RequestMethod.PUT)
 	public Book updateBook(@RequestBody Book book, @PathVariable String barcode) {
 		return bookService.update(book, barcode);
 
@@ -38,6 +40,11 @@ public class BookController {
 	@RequestMapping(value = "price/{barcode}", method = RequestMethod.GET)
 	public String price(@PathVariable String barcode) {
 		return priceService.calculate(barcode);
+	}
+	
+	@RequestMapping(value = "books", method = RequestMethod.GET)
+	public List<Book> getAllBooks() {
+		return bookService.findAll();
 	}
 
 }

@@ -3,7 +3,7 @@ package bs.controller;
 
 
 import java.math.BigDecimal;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
@@ -52,13 +52,13 @@ public class BookControllerTest {
 
 	@Test
 	public void testAddBook() throws Exception {
+		String expected = "Saved";
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-		Book book = new Book("Book Name", "Author", "barcode,", 10, new BigDecimal(3));
-		when(bookRepository.save(any(Book.class))).thenReturn(book);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/book/barcode", book).contentType(MediaType.ALL);
+		when(bookService.save(any(Book.class))).thenReturn("Saved");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/books").content(exampleBookJson).contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		assertThat(result.equals("Saved"));
+		assertEquals(expected, result.getResponse().getContentAsString());
 	}
 
 	@Test
@@ -72,10 +72,11 @@ public class BookControllerTest {
 
 	@Test
 	public void price() throws Exception {
-		when(bookService.calculatePrice("barcode")).thenReturn("30");
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/price/barcode").accept(MediaType.APPLICATION_JSON);
+		String expected = "30";
+		when(priceService.calculate("barcode")).thenReturn("30");
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/price/barcode").accept(MediaType.ALL);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		assertThat(result.equals("30"));
+		assertEquals(expected, result.getResponse().getContentAsString());
 
 	}
 

@@ -1,0 +1,48 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<section>
+	<div class="newBookForm">
+		<fieldset>
+			<legend>Science journal info:</legend>
+			<div style="margin: auto;">
+				<div>
+					<div>Book name</div>
+					<input th:field="*{name}" type="text" th:required="required"
+						name="name" placeholder="Book name.." />
+				</div>
+				<div>
+					<div>Autohor</div>
+					<input th:field="*{author}" type="text" th:required="required"
+						name="author" placeholder="Author.." />
+				</div>
+				<div>
+					<div>Barcode</div>
+					<input th:field="*{barcode}" type="text" th:required="required" id="barcodeInput"
+						name="barcode" placeholder="Barcode.." />
+				</div>
+				<div>
+					<div>Quantity</div>
+					<input th:field="*{quantity}" type="number" th:required="required"
+						name="quantity" placeholder="1" min="0"/>
+				</div>
+				<div>
+					<div>Price</div>
+					<input th:field="*{price}" type="number" th:required="required"
+						name="price" step=".01" min="0" placeholder="1.00" />
+				</div>
+				<div>
+					<div>Science index</div>
+					<input th:field="*{scienceIndex}" type="number"
+						th:required="required" name="scienceIndex" min="1" max="10"
+						placeholder="1.00" />
+				</div>
+
+			</div>
+
+			<input id="submit" type="submit" value="Add journal" />
+
+		</fieldset>
+	</div>
+</section>
+</html>

@@ -1,5 +1,7 @@
 package bs.service;
 
+import java.util.List;
+
 public interface BookService<T> {
 
 
@@ -10,5 +12,7 @@ public interface BookService<T> {
 	public T update(T newBook, String barcode);
 	
 	public String calculatePrice(String barcode);
+	
+	public List<T> findAll();
 
 }

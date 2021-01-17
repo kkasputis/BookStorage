@@ -1,6 +1,8 @@
 package bs.service;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import bs.entity.Book;
@@ -11,12 +13,14 @@ public class BookServiceImpl implements BookService<Book> {
 	@Autowired
 	BookRepository bookRepository;
 
-	
 	public String save(Book book) {
+		if (bookRepository.existsByBarcode(book.getBarcode())) {
+			return "Book with this barcode already exist.";
+		}
 		try {
-			bookRepository.save(book); 
-			return "Saved"; }
-		catch(Exception e) {
+			bookRepository.save(book);
+			return "Saved";
+		} catch (Exception e) {
 			return "Could not save book because:" + e;
 		}
 	}
@@ -24,7 +28,6 @@ public class BookServiceImpl implements BookService<Book> {
 	public Book findByBarcode(String barcode) {
 		return bookRepository.findFirstByBarcode(barcode).orElse(null);
 	}
-
 
 	public Book update(Book newBook, String barcode) {
 		Book book = findByBarcode(barcode);
@@ -42,11 +45,14 @@ public class BookServiceImpl implements BookService<Book> {
 	public String calculatePrice(String barcode) {
 		Book book = findByBarcode(barcode);
 		if (book != null) {
-		BigDecimal totalPrice = book.getPrice().multiply(new BigDecimal(book.getQuantity()));
-		return totalPrice.toString();
+			BigDecimal totalPrice = book.getPrice().multiply(new BigDecimal(book.getQuantity()));
+			return totalPrice.toString();
+		} else {
+			return "Could not find book with barcode: " + barcode;
 		}
-		else { return "Could not find book with barcode: " + barcode;
 	}
+	public List<Book> findAll() {
+		return bookRepository.findAll();
 	}
 
 }

@@ -1,20 +1,33 @@
 package bs.service;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import bs.entity.ScienceJournal;
+import bs.repository.BookRepository;
 import bs.repository.ScienceJournalRepository;
 
 @Service
 public class ScienceJournalService implements BookService<ScienceJournal>{
 	@Autowired
 	ScienceJournalRepository scienceJournalRepository;
+	@Autowired
+	BookRepository bookRepository;
 
 	public String save(ScienceJournal journal) {
+		if (bookRepository.existsByBarcode(journal.getBarcode())) {
+			return "Book with this barcode already exist.";
+		}
 		if ((journal.getScienceIndex() > 0) && (journal.getScienceIndex() < 11)) {
-			scienceJournalRepository.save(journal);
-			return "Saved";
+			try {
+				scienceJournalRepository.save(journal);
+				return "Saved";
+			} catch (Exception e) {
+				return "Could not save journal because:" + e;
+			}
+
 		} else {
 			return "Science index out of boundries";
 		}
@@ -47,5 +60,10 @@ public class ScienceJournalService implements BookService<ScienceJournal>{
 		} else {
 			return "Could not find journal with barcode: " + barcode;
 		}
+	}
+
+
+	public List<ScienceJournal> findAll() {
+		return scienceJournalRepository.findAll();
 	}
 }

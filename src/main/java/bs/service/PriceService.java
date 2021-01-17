@@ -2,10 +2,6 @@ package bs.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import bs.entity.AntiqueBook;
-import bs.entity.Book;
-import bs.entity.ScienceJournal;
 import bs.repository.BookRepository;
 
 @Service
@@ -21,18 +17,19 @@ public class PriceService {
 
 	public String calculate(String barcode) {
 		if (bookRepository.findFirstByBarcode(barcode).orElse(null) != null) {
-			if (AntiqueBook.class == bookRepository.findFirstByBarcode(barcode).orElse(null).getClass()) {
-				return antiqueBookService.calculatePrice(barcode);
+			String className = bookRepository.findFirstByBarcode(barcode).get().getClass().getName();
+			switch(className) {
+			  case "bs.entity.AntiqueBook":
+				  return antiqueBookService.calculatePrice(barcode);
+			    
+			  case "bs.entity.ScienceJournal":
+				  return scienceJournalService.calculatePrice(barcode);
+			  case "bs.entity.Book":
+				  return bookService.calculatePrice(barcode);
+			  default:
+			    return "Could not find book type...";
 			}
-			if (ScienceJournal.class == bookRepository.findFirstByBarcode(barcode).orElse(null).getClass()) {
-				return scienceJournalService.calculatePrice(barcode);
-			}
-			if (Book.class == bookRepository.findFirstByBarcode(barcode).orElse(null).getClass()) {
-				return bookService.calculatePrice(barcode);
-			}
-			else {
-				return "Could not find book type...";
-			}
+
 		}
 		
 		else {

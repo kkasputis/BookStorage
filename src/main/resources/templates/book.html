@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/style.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regular book</title>
+</head>
+<body>
+	<div style="text-align: center; font-size: xxx-large; margin-top: 20px">
+		Book Storage Administrator</div>
+	<div class="navigation">
+		<a href="/" class="linkButton">All books</a> <a href="/antiquelist"
+			class="linkButton">Antique books</a> <a href="/sciencelist"
+			class="linkButton">Science journals</a>
+	</div>
+	<div style="text-align: center; font-size: xx-large; margin-top: 20px">
+		Regular book</div>
+	<div class="bookInfoTitle">
+		Book name:
+		<div class="bookInfo" th:text="${book.name}"></div>
+	</div>
+	<div class="bookInfoTitle">
+		Book author:
+		<div class="bookInfo" th:text="${book.author}"></div>
+	</div>
+	<div class="bookInfoTitle">
+		Book barcode:
+		<div class="bookInfo" th:text="${book.barcode}"></div>
+	</div>
+	<div class="bookInfoTitle">
+		Available quantity:
+		<div class="bookInfo" th:text="${book.quantity}"></div>
+	</div>
+	<div class="bookInfoTitle">
+		Book price:
+		<div class="bookInfo" th:text="${book.price}"></div>
+	</div>
+	<fieldset style="margin-left: 10%; margin-top: 40px; width: 80%;">
+		<legend>Total price</legend>
+		<button th:onClick="'calculate(\'' + @{${book.barcode}} + '\')'"
+			style="width: 150px;">Calculate</button>
+		<div id="result"></div>
+	</fieldset>
+	<button th:onClick="editBook()"
+		style="margin-left: 10%; margin-top: 40px; width: 150px;">Update
+		book</button>
+
+	<fieldset id="updateBook"
+		style="margin-left: 10%; margin-top: 40px; width: 80%;">
+		<legend>Update book</legend>
+
+		<form th:object="${book}" th:action="@{/front/book/update}"
+			method="POST" id="editBook">
+
+			<th:block th:include="/bookForm"></th:block>
+
+		</form>
+	</fieldset>
+</body>
+<script>
+	var bookForm = document.getElementById("updateBook");
+	document.getElementById('barcodeInput').setAttribute('readonly', true);
+	document.getElementById("submit").value = "Update book";
+	bookForm.style.display = "none";
+
+	function calculate(barcode) {
+
+		$
+				.ajax({
+					type : "GET",
+					url : "/price/" + barcode,
+
+					success : function(data) {
+						if (data != null) {
+							document.getElementById("result").innerHTML = data;
+						}
+
+						else {
+							document.getElementById("result").innerHTML = 'Įvyko klaida.';
+							document.getElementById("result").style.color = "red";
+						}
+
+					}
+				});
+	}
+	function editBook() {
+		if (bookForm.style.display === "none") {
+			bookForm.style.display = "block";
+		} else {
+			bookForm.style.display = "none";
+		}
+	}
+</script>
+
+</html>

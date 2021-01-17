@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/style.css">
+<title>Book Storage Administrator</title>
+</head>
+<body>
+	<div style="text-align: center; font-size: xxx-large; margin-top: 20px">
+		Book Storage Administrator</div>
+		<div class="navigation">
+		<a href="/" class="linkButton">All books</a>
+		<a href="/antiquelist" class="linkButton">Antique books</a>
+		<a href="/sciencelist" class="linkButton">Science journals</a>
+		</div>
+	<div>
+
+		<div style="text-align: center;">Book list</div>
+
+		<table style="width: 80%; margin: auto;">
+			<tr>
+				<th>Name</th>
+				<th>Author</th>
+				<th>Price</th>
+				<th>Quantity</th>
+
+			</tr>
+			<tr th:each="book: ${books}">
+				<td><a th:href="'/bookinfo/' + @{${book.barcode}}"
+					th:text="${book.name}"></a></td>
+				<td th:text="${book.author}"></td>
+				<td th:text="${book.price}"></td>
+				<td th:text="${book.quantity}"></td>
+
+			</tr>
+		</table>
+	</div>
+			<div th:if="${info != null}" th:text="${info}" class="infoAlert"></div>
+	<div>
+		<fieldset style="margin-left: 10%; margin-top: 40px; width: 80%;">
+			<legend>Add new book</legend>
+			<fieldset style="width: 40%; min-width: 150px; margin-left: 10%;">
+				<legend>Book type</legend>
+
+				<input type="radio" id="bookRadio" name="bookType" value="book"
+					onclick="showBookForm()" checked="checked"> <label
+					for="male">Regular book</label><br> <input type="radio"
+					id="antiqueRadio" name="bookType" value="antique"
+					onclick="showAntiqueForm()"> <label for="female">Antique
+					book</label><br> <input type="radio" id="scienceRadio" name="bookType"
+					value="science" onclick="showScienceForm()"> <label
+					for="other">Science journal</label>
+			</fieldset>
+			<div style="margin-left: 11%; margin-top: 25px; margin-bottom: 30px;">
+			<form th:object="${newBook}" th:action="@{/front/book/save}"
+				method="POST" id="book">
+
+				<th:block th:include="/bookForm"></th:block>
+
+			</form>
+			<form th:object="${newAntiqueBook}"
+				th:action="@{/front/antique/save}" method="POST" id="antique">
+				<th:block th:include="/antiqueForm"></th:block>
+			</form>
+			<form th:object="${newScienceJournal}"
+				th:action="@{/front/science/save}" method="POST" id="science">
+				<th:block th:include="/scienceForm"></th:block>
+			</form>
+			</div>
+		</fieldset>
+	</div>
+
+</body>
+<script>
+	var bookForm = document.getElementById("book");
+	var antiqueForm = document.getElementById("antique");
+	var scienceForm = document.getElementById("science");
+	antiqueForm.style.display = "none";
+	scienceForm.style.display = "none";
+	function showBookForm() {
+
+		bookForm.style.display = "block";
+		antiqueForm.style.display = "none";
+		scienceForm.style.display = "none";
+
+	}
+	function showScienceForm() {
+
+		bookForm.style.display = "none";
+		antiqueForm.style.display = "none";
+		scienceForm.style.display = "block";
+
+	}
+	function showAntiqueForm() {
+
+		bookForm.style.display = "none";
+		antiqueForm.style.display = "block";
+		scienceForm.style.display = "none";
+
+	}
+</script>
+</html>
