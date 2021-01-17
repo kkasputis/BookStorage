@@ -10,7 +10,7 @@ add book - localhost:8080/books POST
 get book info - localhost:8080/book/{barcode} GET
 update - localhost:8080/book/{barcode} PUT
 
-antique book serives:
+antique book services:
 
 add antique book - localhost:8080/antique POST
 get antique book info - localhost:8080/antique/{barcode} GET
