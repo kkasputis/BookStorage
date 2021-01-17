@@ -1,7 +1,7 @@
 # BookStorage
 Book Storage
 Restfull services for book storage.
-Also added a simple front-end that uses rest services for easier testing without useing "Postman" or other software. 
+Also added a simple front-end that uses rest services for easier testing without using "Postman" or other software. 
 Front end controller is at localhost:8080
 
 regular book rest service:
